@@ -16,7 +16,7 @@ following are good locations: `/usr/share/php/mince-1.0` or
 ### Suggested Installation
 
     cd /usr/local/share/php
-    svn checkout http://mince.googlecode.com/svn/trunk/ mince-1.0
+    git clone git://github.com/sumpygump/mince.git mince-1.0
 
 Add a symlink to the mince program somewhere in your path
 
