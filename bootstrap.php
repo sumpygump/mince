@@ -1,0 +1,14 @@
+<?php
+/**
+ * Bootstrap file 
+ *
+ * @package Mince
+ */
+
+$paths = array(
+    realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'lib',
+);
+set_include_path(implode(PATH_SEPARATOR, $paths));
+
+require_once 'Qi/Spyc.php';
+require_once 'Mince.php';

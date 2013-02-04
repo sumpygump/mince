@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+
+require_once 'bootstrap.php';
+
+require_once 'Qi/Console/ArgV.php';
+require_once 'Qi/Console/Terminal.php';
+require_once 'MinceConsole.php';
+
+$args = new Qi_Console_ArgV(
+    $argv,
+    array(
+        'quiet|q'   => 'Quiet',
+        'verbose|v' => 'Verbose messaging',
+        'file|f:'   => 'Mince config file',
+    )
+);
+
+$console = new MinceConsole();
+
+if ($args->version) {
+    $console->showVersion();
+    exit(0);
+}
+
+$console->setVerbose($args->verbose);
+$console->setQuiet($args->quiet);
+$status = $console->execute($args->file);
+exit($status);

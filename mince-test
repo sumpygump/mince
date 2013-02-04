@@ -1,0 +1,9 @@
+#!/usr/bin/env php
+<?php
+
+require_once 'bootstrap.php';
+
+$mince = new Mince();
+$output = $mince->execute();
+
+print_r($output);
