@@ -1,11 +1,13 @@
 #!/usr/bin/env php
 <?php
+/**
+ * Mince cli runner
+ *
+ * @package Mince
+ */
 
 require_once 'bootstrap.php';
-
-require_once 'Qi/Console/ArgV.php';
-require_once 'Qi/Console/Terminal.php';
-require_once 'MinceConsole.php';
+require_once 'MinceClient.php';
 
 $args = new Qi_Console_ArgV(
     $argv,
@@ -16,14 +18,11 @@ $args = new Qi_Console_ArgV(
     )
 );
 
-$console = new MinceConsole();
+$terminal = new Qi_Console_Terminal();
 
-if ($args->version) {
-    $console->showVersion();
-    exit(0);
-}
+$handler = new Qi_Console_ExceptionHandler($terminal, true);
 
-$console->setVerbose($args->verbose);
-$console->setQuiet($args->quiet);
-$status = $console->execute($args->file);
+$client = new MinceClient($args, $terminal);
+
+$status = $client->execute($args->file);
 exit($status);

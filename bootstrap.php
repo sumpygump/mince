@@ -10,5 +10,7 @@ $paths = array(
 );
 set_include_path(implode(PATH_SEPARATOR, $paths));
 
+require_once 'vendor/autoload.php';
+
 require_once 'Qi/Spyc.php';
 require_once 'Mince.php';
