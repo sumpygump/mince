@@ -5,8 +5,6 @@
  * @package Mince
  */
 
-require_once 'bootstrap.php';
-
 /**
  * Mince class
  *
