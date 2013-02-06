@@ -10,17 +10,17 @@ Minify and combine your js and css files in a web project: a command line tool w
  - csstidy
 
 Checkout or download the files into a location on your server or machine. The
-following are good locations: `/usr/share/php/mince-1.1` or
-`/usr/local/share/php/mince-1.1`
+following are good locations: `/usr/share/php/mince-1.3` or
+`/usr/local/share/php/mince-1.3`
 
 ### Suggested Installation
 
     cd /usr/local/share/php
-    git clone git://github.com/sumpygump/mince.git mince-1.1
+    git clone git://github.com/sumpygump/mince.git mince-1.3
 
 Add a symlink to the mince program somewhere in your path
 
-    ln -s /usr/local/share/php/mince-1.1/mince /usr/local/bin/mince
+    ln -s /usr/local/share/php/mince-1.3/mince /usr/local/bin/mince
     chmod a+x /usr/local/bin/mince
 
 ## Usage

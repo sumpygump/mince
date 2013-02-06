@@ -1,4 +1,20 @@
 {
+    "name": "sumpygump/mince",
+    "description": "Minify and combine tool",
+    "keywords": ["minify","combine","css","js","csstidy","jsmin"],
+    "homepage": "http://quantalideas.com/code/mince",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jansen Price",
+            "email": "jansen.price@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0" : {
+            "Mince" : "lib/"
+        }
+    },
     "repositories": [
         {
             "type": "vcs",
@@ -8,5 +24,6 @@
     "require": {
         "php": ">=5.2",
         "sumpygump/qi-console": "dev-master"
-    }
+    },
+    "bin": ["mince"]
 }
