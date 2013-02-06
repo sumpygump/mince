@@ -17,6 +17,8 @@ following are good locations: `/usr/share/php/mince-1.3` or
 
     cd /usr/local/share/php
     git clone git://github.com/sumpygump/mince.git mince-1.3
+    cd mince-1.3
+    composer.phar install
 
 Add a symlink to the mince program somewhere in your path
 
