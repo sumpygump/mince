@@ -23,7 +23,7 @@ class Mince
      * 
      * @var string
      */
-    const VERSION = '1.0.2';
+    const VERSION = '1.2.0';
 
     /**
      * The filename of the minceconf file
@@ -49,10 +49,10 @@ class Mince
     /**
      * Constructor
      *
-     * @param object $console Mince console object
+     * @param MinceClient $console Mince console object
      * @return void
      */
-    public function __construct(MinceConsole $console = null)
+    public function __construct(MinceClient $console = null)
     {
         $this->_console = $console;
     }
@@ -233,6 +233,10 @@ class Mince
 
         foreach ($this->_minceconf['combine'] as $targetFile => $files) {
             $combined = '';
+
+            if (!is_array($files)) {
+                $files = array($files);
+            }
 
             foreach ($files as $filename) {
                 if (!file_exists($filename)) {

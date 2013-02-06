@@ -1,0 +1,12 @@
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "http://github.com/sumpygump/qi-console"
+        }
+    ],
+    "require": {
+        "php": ">=5.2",
+        "sumpygump/qi-console": "dev-master"
+    }
+}
