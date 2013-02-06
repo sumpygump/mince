@@ -15,14 +15,8 @@
             "Mince" : "lib/"
         }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "http://github.com/sumpygump/qi-console"
-        }
-    ],
     "require": {
-        "php": ">=5.2",
+        "php": ">=5.3",
         "sumpygump/qi-console": "dev-master"
     },
     "bin": ["mince"]
