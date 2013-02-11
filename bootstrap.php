@@ -7,6 +7,7 @@
 
 $paths = array(
     realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'lib',
+    get_include_path(),
 );
 set_include_path(implode(PATH_SEPARATOR, $paths));
 
