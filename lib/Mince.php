@@ -5,6 +5,8 @@
  * @package Mince
  */
 
+use Symfony\Component\Yaml\Yaml;
+
 /**
  * Mince class
  *
@@ -18,7 +20,7 @@ class Mince
 {
     /**
      * Version
-     * 
+     *
      * @var string
      */
     const VERSION = '1.3.0';
@@ -32,7 +34,7 @@ class Mince
 
     /**
      * Mince configuration
-     * 
+     *
      * @var array
      */
     protected $_minceconf = array();
@@ -57,13 +59,23 @@ class Mince
 
     /**
      * Set config file
-     * 
+     *
      * @param mixed $filename Filename
      * @return void
      */
     public function setConfigFile($filename)
     {
         $this->_configFilename = $filename;
+    }
+
+    /**
+     * Get the loaded minceconf
+     *
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->_minceconf;
     }
 
     /**
@@ -146,9 +158,13 @@ class Mince
     {
         $this->_notify('Parsing mince config.', 2);
 
-        $this->_minceconf = array_merge(
-            $this->_minceconf, Qi_Spyc::YAMLLoad($conf)
-        );
+        $config = Yaml::parse($conf);
+
+        if (!empty($config)) {
+            $this->_minceconf = array_merge(
+                $this->_minceconf, $config
+            );
+        }
 
         $counts = $this->_countRules();
         $this->_notify('Parsed ' . array_sum($counts) . ' rules.', 2);
@@ -156,7 +172,7 @@ class Mince
 
     /**
      * Count mince rules
-     * 
+     *
      * @return array
      */
     protected function _countRules()
@@ -169,15 +185,25 @@ class Mince
         $combineCount = 0;
 
         if (!empty($this->_minceconf['minify'])) {
-            $minifyCount = count($this->_minceconf['minify']);
+            if (is_array($this->_minceconf['minify'])) {
+                $minifyCount = count($this->_minceconf['minify']);
+            } else {
+                $minifyCount = 1;
+            }
         }
 
-        if (!empty($this->_minceconf['combine'])) {
+        if (!empty($this->_minceconf['combine'])
+            && is_array($this->_minceconf['combine'])
+        ) {
             foreach ($this->_minceconf['combine'] as $combine) {
                 if (!is_array($combine)) {
                     continue;
                 }
-                $combineCount += count($combine);
+                foreach ($combine as $combineFile) {
+                    if (null !== $combineFile) {
+                        $combineCount += count($combine);
+                    }
+                }
             }
         }
 
@@ -193,31 +219,46 @@ class Mince
     {
         $this->_notify('Begin minifying ...');
 
-        foreach ($this->_minceconf['minify'] as $filename) {
-            if (!file_exists($filename)) {
-                $this->_notify("  File '$filename' doesn't exist.", 0);
-                continue;
+        if (is_array($this->_minceconf['minify'])) {
+            foreach ($this->_minceconf['minify'] as $filename) {
+                $this->_minifyFile($filename);
             }
-
-            $filetype = pathinfo($filename, PATHINFO_EXTENSION);
-            switch ($filetype) {
-            case 'js':
-                $outfile = preg_replace('/\.js$/', '.min.js', $filename);
-
-                $cmd = 'jsmin > ' . $outfile . ' < ' . $filename;
-                $this->_runCmd($cmd);
-                break;
-            case 'css':
-                $outfile = str_replace('.css', '.min.css', $filename);
-
-                $cmd = 'csstidy ' . $filename . ' ' . $outfile
-                    . ' --template=highest --silent=true';
-                $this->_runCmd($cmd);
-                break;
-            }
+        } else {
+            // Just one file?
+            $this->_minifyFile($this->_minceconf['minify']);
         }
 
+
         $this->_notify('Done minifying');
+    }
+
+    protected function _minifyFile($filename)
+    {
+        if (empty($filename) || (is_string($filename) && trim($filename) == "")) {
+            return;
+        }
+
+        if (!file_exists($filename)) {
+            $this->_notify("  File '$filename' doesn't exist.", 0);
+            return;
+        }
+
+        $filetype = pathinfo($filename, PATHINFO_EXTENSION);
+        switch ($filetype) {
+        case 'js':
+            $outfile = preg_replace('/\.js$/', '.min.js', $filename);
+
+            $cmd = 'jsmin > ' . $outfile . ' < ' . $filename;
+            $this->_runCmd($cmd);
+            break;
+        case 'css':
+            $outfile = str_replace('.css', '.min.css', $filename);
+
+            $cmd = 'csstidy ' . $filename . ' ' . $outfile
+                . ' --template=highest --silent=true';
+            $this->_runCmd($cmd);
+            break;
+        }
     }
 
     /**
@@ -276,7 +317,7 @@ class Mince
 
     /**
      * Notify
-     * 
+     *
      * @param mixed $message Message to display
      * @param int $level Message level
      *      0 = warning message
@@ -301,7 +342,7 @@ class Mince
 
     /**
      * Get the version number
-     * 
+     *
      * @return string
      */
     public static function getVersion()
