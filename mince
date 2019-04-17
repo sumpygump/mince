@@ -6,8 +6,7 @@
  * @package Mince
  */
 
-require_once 'bootstrap.php';
-require_once 'MinceClient.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 $args = new Qi_Console_ArgV(
     $argv,
